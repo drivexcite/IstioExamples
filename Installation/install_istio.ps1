@@ -22,4 +22,4 @@ helm fetch istio.io/istio
 .\Expand-Tar.ps1 .\istio-1.3.4.tar
 
 # Create Istio System YAML for Kubernetes
-helm template --name istio-io .\istio-1.3.4\istio\ > .\01.istio.yaml
+helm template --name istio --namespace istio-system --set grafana.enabled=True --set kiali.enabled=True --set galle y.enabled=True .\istio-1.3.4\istio\ > .\01.istio.yaml
