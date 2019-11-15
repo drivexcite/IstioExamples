@@ -23,3 +23,9 @@ helm fetch istio.io/istio
 
 # Create Istio System YAML for Kubernetes
 helm template --name istio --namespace istio-system --set grafana.enabled=True --set kiali.enabled=True --set kiali.dashboard.username=admin --set values.global.disablePolicyChecks=false --set kiali.dashboard.passphrase=admin --set galley.enabled=True .\istio-1.3.4\istio\ > .\01.istio.yaml
+
+# Label default namespace so that resources deployed in it get Envoy proxies automatically injected
+kubectl label namespace default istio-injection=enabled
+
+# Alternatively check the namespace definition to verify is correct
+# kubectl get namespace default -o yaml
