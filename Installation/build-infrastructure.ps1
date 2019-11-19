@@ -5,7 +5,7 @@ $clusterName = 'IstioExampleCluster'
 az group create --name $resourceGroup --location westus
 az acr create --resource-group $resourceGroup --name $containerRegistry --admin-enabled --sku Basic 
 az configure --defaults acr=$containerRegistry
-az aks create --resource-group $resourceGroup --name $clusterName --node-count 4 --node-vm-size Standard_B2s --enable-addons monitoring --generate-ssh-keys
+az aks create --resource-group $resourceGroup --name $clusterName --node-count 2 --node-vm-size Standard_B2ms --enable-addons monitoring --generate-ssh-keys
 
 # Install Kubernetes CLI (kubectl)
 az aks install-cli
