@@ -13,10 +13,10 @@ Note that Istio pilot is running inside each app container so as to coordinate E
 
 ## Prerequisites
 
-* Clone Istio Pilot [repo](https://github.com/istio/pilot) (required only if building images locally)
+ * Clone Istio Pilot [repo](https://github.com/istio/pilot) (required only if building images locally)
 
-* Download istioctl from Istio's [releases page](https://github.com/istio/istio/releases) or build from
-source in Istio Pilot repository
+ * Download istioctl from Istio's [releases page](https://github.com/istio/istio/releases) or build from
+ source in Istio Pilot repository
 
 ## Bookinfo Demo
 
@@ -24,21 +24,21 @@ The ingress controller is still under construction, routing functionalities can 
 
 To build all images for the bookinfo sample for the consul adapter, run:
 
-```bash
-samples/bookinfo/src/build-docker-services.sh
-```
+  ```
+  samples/bookinfo/src/build-docker-services.sh
+  ```
 
 For Linux users, configure the `DOCKER_GATEWAY` environment variable
 
-```bash
-export DOCKER_GATEWAY=172.28.0.1:
-```
+   ```bash
+   export DOCKER_GATEWAY=172.28.0.1:
+   ```
 
 To bring up the control plane containers directly, from the root repository directory run
 
-```bash
-docker-compose -f install/consul/istio.yaml up -d
-```
+  ```
+  docker-compose -f install/consul/istio.yaml up -d
+  ```
 
 This will pull images from docker hub to your local computing space.
 
@@ -46,11 +46,13 @@ Now you can see all the containers in the mesh by running `docker ps -a`.
 
 If the webpage is not displaying properly, you may need to run the previous command once more to resolve a timing issue during start up.
 
+
 To bring up the app containers, from the `samples/bookinfo/consul` directory run
 
-```bash
-docker-compose -f bookinfo.yaml up -d
-```
+  ```
+  docker-compose -f bookinfo.yaml up -d
+  ```
+
 
 To view the productpage webpage, open a web browser and enter `localhost:9081/productpage`.
 
@@ -58,7 +60,7 @@ If you refresh the page several times, you should see different versions of revi
 
 Configure `kubectl` to use the locally mapped port for the Istio api server
 
-```bash
+```
 kubectl config set-context istio --cluster=istio
 kubectl config set-cluster istio --server=http://localhost:8080
 kubectl config use-context istio

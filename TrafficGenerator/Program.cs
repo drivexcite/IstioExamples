@@ -13,16 +13,16 @@ namespace TrafficGenerator
 
             for (var i = 0; i < 10_000; i++)
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, "http://40.80.157.109/productpage"))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, "http://104.42.126.86/productpage"))
                 {
-                    request.Headers.Add("ClientId", "BCBSSC");
                     var response = httpClient.SendAsync(request).GetAwaiter().GetResult();
 
+                    Console.WriteLine(response.StatusCode);
                     Console.Write(response.Headers.ToString());
                     Console.WriteLine(response.Content.Headers.ToString());
                 }
-                
-                Thread.Sleep(250);
+
+                Thread.Sleep(200);
             }
         }
     }

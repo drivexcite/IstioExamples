@@ -1,0 +1,93 @@
+# This instance defines how to determine the criteria to count against the quota.
+# In this particular case the criteria is:
+#  * The IP of the Client
+#  * The Application name or service
+#  * The Version of the Application, to allow multiple versions of the same app
+apiVersion: config.istio.io/v1alpha2
+kind: instance
+metadata:
+  name: requestcountquota
+  namespace: istio-system
+spec:
+  compiledTemplate: quota
+  params:
+    dimensions:
+      source: request.headers["x-forwarded-for"] | "unknown"
+      destination: destination.labels["app"] | destination.service.name | destination.workload.name | "unknown"
+      destinationVersion: destination.labels["version"] | "unknown"
+---
+
+# The QuotaSpec is Istio's way to make certain kinds of requests more expensive than others.
+# Every goddamn example I found only "charges" 1.
+apiVersion: config.istio.io/v1alpha2
+kind: QuotaSpec
+metadata:
+  name: request-count
+  namespace: istio-system
+spec:
+  rules:
+  - quotas:
+    - charge: 1
+      quota: requestcountquota
+---
+# QuotaSpecBinding attaches the QuotaSpec to a certain Virtual Service
+apiVersion: config.istio.io/v1alpha2
+kind: QuotaSpecBinding
+metadata:
+  name: request-count
+  namespace: istio-system
+spec:
+  quotaSpecs:
+  - name: request-count
+    namespace: istio-system
+  services:
+  - name: productpage
+    namespace: default
+    #  - service: '*'  # Uncomment this to bind *all* services to request-count
+---
+# The handler is the part of the Policy infrastructure that actually enforces the Quotas
+# Only when there is one instance of Mixer, it is possible, although hardly discouraged, 
+# to run a memquota adapter. For production configuration, a Redis based handler needs to
+# be configured for the policy enforcement to work.
+apiVersion: config.istio.io/v1alpha2
+kind: handler
+metadata:
+  name: memquotahandler
+  namespace: istio-system
+spec:
+  compiledAdapter: memquota
+  params:
+    quotas:
+    - name: requestcountquota.instance.istio-system
+      maxAmount: 500
+      validDuration: 1s
+      # The first matching override is applied.
+      # A requestcount instance is checked against override dimensions.
+      overrides:    
+      # The following override applies to 'productpage' when
+      # the source is a specific ip address.
+      # - dimensions:
+      #     destination: productpage
+      #     source: "160.2.119.236"
+      #   maxAmount: 10
+      # The following override applies to 'productpage' regardless
+      # of the source.
+      - dimensions:
+          destination: productpage
+        maxAmount: 5
+---
+# And finally, rules are Istio's way to instruct a Handler how to collect the utilization
+# metrics as defined in the Instance dimensions section.
+apiVersion: config.istio.io/v1alpha2
+kind: rule
+metadata:
+  name: quota
+  namespace: istio-system
+spec:
+  # quota only applies if you are not logged in.
+  # match: match(request.headers["cookie"], "session=*") == false
+  actions:
+  - handler: memquotahandler
+    instances:
+    - requestcountquota
+---
