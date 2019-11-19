@@ -19,10 +19,15 @@ namespace TrafficGenerator
 
                     Console.WriteLine(response.StatusCode);
                     Console.Write(response.Headers.ToString());
-                    Console.WriteLine(response.Content.Headers.ToString());
+                    Console.Write(response.Content.Headers.ToString());
+
+                    if (!response.IsSuccessStatusCode)
+                        Console.WriteLine(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+
+                    Console.WriteLine();
                 }
 
-                Thread.Sleep(200);
+                Thread.Sleep(100);
             }
         }
     }

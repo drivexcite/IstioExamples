@@ -2,7 +2,6 @@
 # In this particular case the criteria is:
 #  * The IP of the Client
 #  * The Application name or service
-#  * The Version of the Application, to allow multiple versions of the same app
 apiVersion: config.istio.io/v1alpha2
 kind: instance
 metadata:
@@ -13,8 +12,7 @@ spec:
   params:
     dimensions:
       source: request.headers["x-forwarded-for"] | "unknown"
-      destination: destination.labels["app"] | destination.service.name | destination.workload.name | "unknown"
-      destinationVersion: destination.labels["version"] | "unknown"
+      destination: destination.labels["app"] | destination.workload.name | "unknown"
 ---
 
 # The QuotaSpec is Istio's way to make certain kinds of requests more expensive than others.
@@ -59,22 +57,22 @@ spec:
   params:
     quotas:
     - name: requestcountquota.instance.istio-system
-      maxAmount: 500
-      validDuration: 1s
+      maxAmount: 40
+      validDuration: 10s
       # The first matching override is applied.
       # A requestcount instance is checked against override dimensions.
-      overrides:    
+      # overrides:    
       # The following override applies to 'productpage' when
       # the source is a specific ip address.
       # - dimensions:
       #     destination: productpage
-      #     source: "160.2.119.236"
+      #     source: '160.2.119.236'
       #   maxAmount: 10
       # The following override applies to 'productpage' regardless
       # of the source.
-      - dimensions:
-          destination: productpage
-        maxAmount: 5
+      # - dimensions:
+      #     destination: productpage
+      #   maxAmount: 20
 ---
 # And finally, rules are Istio's way to instruct a Handler how to collect the utilization
 # metrics as defined in the Instance dimensions section.
