@@ -57,7 +57,7 @@ spec:
   params:
     quotas:
     - name: requestcountquota.instance.istio-system
-      maxAmount: 40
+      maxAmount: 20
       validDuration: 10s
       # The first matching override is applied.
       # A requestcount instance is checked against override dimensions.

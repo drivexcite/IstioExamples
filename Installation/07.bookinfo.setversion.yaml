@@ -19,10 +19,18 @@ spec:
   hosts:
   - reviews
   http:
+  # - match:
+  #   - headers:
+  #       end-user:
+  #         exact: tomstchief
+  #   route:
+  #   - destination:
+  #       host: reviews
+  #       subset: v2
   - route:
     - destination:
         host: reviews
-        subset: v3
+        subset: v1
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
