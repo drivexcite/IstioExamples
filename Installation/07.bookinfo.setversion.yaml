@@ -19,6 +19,7 @@ spec:
   hosts:
   - reviews
   http:
+  # This traffic routing rule enables a different version of the reviews backend app to be served to a very special user.
   # - match:
   #   - headers:
   #       end-user:
@@ -26,11 +27,17 @@ spec:
   #   route:
   #   - destination:
   #       host: reviews
-  #       subset: v2
+  #       subset: v2  
   - route:
     - destination:
         host: reviews
         subset: v1
+  # This traffic routing rule is to simulate canary deployments. Only about 20% of the traffic will be routed to v3.
+    #   weight: 80
+    # - destination:
+    #     host: reviews
+    #     subset: v3
+    #   weight: 20
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
