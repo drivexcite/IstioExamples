@@ -25,6 +25,10 @@ spec:
   #     abort:
   #       httpStatus: 503
   #       percent: 25
+  #   # match:
+  #   # - headers:
+  #   #     end-user:
+  #   #       exact: travis
   #   route:
   #   - destination:
   #       host: reviews
@@ -55,15 +59,15 @@ spec:
         subset: v1
   ###
   # Even better, this traffic routing rule is to simulate canary deployments. Only about 20% of the traffic will be routed to v3.
-    #   weight: 60
-    # - destination:
-    #     host: reviews
-    #     subset: v2
-    #   weight: 20
-    # - destination:
-    #     host: reviews
-    #     subset: v3
-    #   weight: 20
+  #     weight: 60
+  #   - destination:
+  #       host: reviews
+  #       subset: v2
+  #     weight: 20
+  #   - destination:
+  #       host: reviews
+  #       subset: v3
+  #     weight: 20
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
