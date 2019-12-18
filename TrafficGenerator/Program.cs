@@ -27,7 +27,7 @@ namespace TrafficGenerator
                     Console.WriteLine();
                 }
 
-                Thread.Sleep(250);
+                Thread.Sleep(100);
             }
         }
     }
