@@ -4,7 +4,7 @@ metadata:
   labels:
     app: nginx-ingress
     component: "controller"
-  name: release-name-nginx-ingress-controller
+  name: nginx-ingress-controller
   namespace: default
 spec:
   selector:
@@ -19,7 +19,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app: nginx-ingress
-  name: release-name-nginx-ingress
+  name: nginx-ingress
   namespace: default
 ---
 
@@ -28,7 +28,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app: nginx-ingress
-  name: release-name-nginx-ingress-backend
+  name: nginx-ingress-backend
   namespace: default
 ---
 
@@ -37,7 +37,7 @@ kind: ClusterRole
 metadata:
   labels:
     app: nginx-ingress
-  name: release-name-nginx-ingress
+  name: nginx-ingress
   namespace: default
 rules:
   - apiGroups:
@@ -96,15 +96,15 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app: nginx-ingress
-  name: release-name-nginx-ingress
+  name: nginx-ingress
   namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: release-name-nginx-ingress
+  name: nginx-ingress
 subjects:
   - kind: ServiceAccount
-    name: release-name-nginx-ingress
+    name: nginx-ingress
     namespace: default
 ---
 
@@ -113,7 +113,7 @@ kind: Role
 metadata:
   labels:
     app: nginx-ingress
-  name: release-name-nginx-ingress
+  name: nginx-ingress
   namespace: default
 rules:
   - apiGroups:
@@ -195,15 +195,15 @@ kind: RoleBinding
 metadata:
   labels:
     app: nginx-ingress
-  name: release-name-nginx-ingress
+  name: nginx-ingress
   namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: release-name-nginx-ingress
+  name: nginx-ingress
 subjects:
   - kind: ServiceAccount
-    name: release-name-nginx-ingress
+    name: nginx-ingress
     namespace: default
 ---
 
@@ -213,7 +213,7 @@ metadata:
   labels:
     app: nginx-ingress
     component: "controller"  
-  name: release-name-nginx-ingress-controller
+  name: nginx-ingress-controller
   namespace: default
 spec:
   clusterIP: ""
@@ -239,7 +239,7 @@ metadata:
   labels:
     app: nginx-ingress
     component: "default-backend"
-  name: release-name-nginx-ingress-default-backend
+  name: nginx-ingress-default-backend
   namespace: default
 spec:
   clusterIP: ""
@@ -260,7 +260,7 @@ metadata:
   labels:
     app: nginx-ingress
     component: "controller"
-  name: release-name-nginx-ingress-controller
+  name: nginx-ingress-controller
   namespace: default
 spec:
   replicas: 2
@@ -343,7 +343,7 @@ spec:
       nodeSelector:
         beta.kubernetes.io/os: linux
         
-      serviceAccountName: release-name-nginx-ingress
+      serviceAccountName: nginx-ingress
       terminationGracePeriodSeconds: 60
 
 ---
@@ -353,7 +353,7 @@ metadata:
   labels:
     app: nginx-ingress
     component: "default-backend"
-  name: release-name-nginx-ingress-default-backend
+  name: nginx-ingress-default-backend
   namespace: default
 spec:
   replicas: 1
@@ -399,5 +399,5 @@ spec:
       nodeSelector:
         beta.kubernetes.io/os: linux
         
-      serviceAccountName: release-name-nginx-ingress-backend
+      serviceAccountName: nginx-ingress-backend
       terminationGracePeriodSeconds: 60
