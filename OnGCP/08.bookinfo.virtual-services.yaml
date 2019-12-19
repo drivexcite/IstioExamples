@@ -1,0 +1,151 @@
+# Virtual Services
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: productpage
+spec:
+  hosts:
+  - productpage
+  http:
+  - route:
+    - destination:
+        host: productpage
+        subset: v1
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+  - reviews
+  http:
+  - route:
+    - destination:
+        host: reviews
+        subset: v1
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ratings
+spec:
+  hosts:
+  - ratings
+  http:
+  - route:
+    - destination:
+        host: ratings
+        subset: v1
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: details
+spec:
+  hosts:
+  - details
+  http:
+  - route:
+    - destination:
+        host: details
+        subset: v1
+---
+
+# Top level Virtual Service
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bookinfo-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage
+        port:
+          number: 9080
+---
+
+# Special section for Kiali, Grafana and Prometheus...
+# to expose 'em externally through the Gateway, since kubectl port forwarding doesn't work from inside a Remote Container
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: prometheus
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bookinfo-gateway
+  http:  
+  - match:
+    - uri:
+        exact: /prometheus    
+    route:
+    - destination:
+        host: prometheus
+        namespace: istio-system
+        port:
+          number: 9090
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bookinfo-gateway
+  http:  
+  - match:
+    - uri:
+        exact: /grafana    
+    route:
+    - destination:
+        host: grafana
+        namespace: istio-system
+        port:
+          number: 3000
+--- 
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kiali
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bookinfo-gateway
+  http:  
+  - match:
+    - uri:
+        exact: /kiali    
+    route:
+    - destination:
+        host: kiali
+        namespace: istio-system
+        port:
+          number: 20001
+---

@@ -1,0 +1,1 @@
+gcloud container clusters delete istioexamplecluster --zone us-west1-a
