@@ -1,8 +1,18 @@
 $resourceGroup = 'IstioExampleResourceGroup'
 $clusterName = 'IstioExampleCluster'
 
+# If you don't have Chocllatey, you are welcome:
+# Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# Install the Azure CLI
+# choco install azure-cli
+
+# Login to Azure
+az login
+
+# Create resource group and cluster
 az group create --name $resourceGroup --location westus
-az aks create --resource-group $resourceGroup --name $clusterName --node-count 2 --node-vm-size Standard_B2ms --generate-ssh-keys
+az aks create --resource-group $resourceGroup --name $clusterName --node-count 4 --node-vm-size Standard_B2ms --generate-ssh-keys
 
 # Install Kubernetes CLI (kubectl)
 az aks install-cli
