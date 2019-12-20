@@ -13,7 +13,7 @@ namespace TrafficGenerator
 
             for (var i = 0; i < 10_000; i++)
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, "http://13.87.157.89/productpage"))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, "http://40.81.14.250/productpage"))
                 {
                     var response = httpClient.SendAsync(request).GetAwaiter().GetResult();
 

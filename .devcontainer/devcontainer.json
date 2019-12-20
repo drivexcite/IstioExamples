@@ -3,31 +3,29 @@
 {
 	"name": "Azure CLI",
 	"dockerFile": "Dockerfile",
-	
 	// Uncomment the next line to have VS Code connect as an existing non-root user in the container. 
 	// On Linux, by default, the container user's UID/GID will be updated to match your local user. See
 	// https://aka.ms/vscode-remote/containers/non-root for details on adding a non-root user if none exist.
 	// "remoteUser": "vscode",
-
 	// Uncomment the next line if you will use a ptrace-based debugger like C++, Go, and Rust
 	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
-
 	// Use 'settings' to set *default* container specific settings.json values on container create. 
 	// You can edit these settings after create using File > Preferences > Settings > Remote.
-	"settings": { 
+	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
-
 	// Use 'appPort' to create a container with published ports. If the port isn't working, be sure
 	// your server accepts connections from all interfaces (0.0.0.0 or '*'), not just localhost.
-	// "appPort": [],
-
+	"appPort": [
+		"20001:20001", // Kiali
+		"3000:3000", // Grafana
+		"9090:9090", // Prometheus
+		"8001:8001" // Kubernetes Dashboard
+	],
 	// Uncomment the next line to run commands after the container is created.
 	// "postCreateCommand": "az --version",
-
 	// Add the IDs of extensions you want installed when the container is created in the array below.
 	"extensions": [
 		"ms-vscode.azurecli"
 	]
-	
 }
