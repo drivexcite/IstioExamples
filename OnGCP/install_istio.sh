@@ -57,16 +57,16 @@ kubectl apply -f 12.bookinfo.reviews.qualified-fault-injection.yaml
 kubectl apply -f 13.bookinfo.reviews.fault-injection-delay.yaml
 
 # To dump the pod metadata in a json file
-kubectl get pods -n istio-system --output json > pods.json
+# kubectl get pods -n istio-system --output json > pods.json
 
 # Inspect the topology of the service mesh in Kiali
 kialiPod=$(kubectl get pods -n istio-system -o jsonpath="{.items[*].metadata.name}" -l app=kiali)
-kubectl port-forward $kialiPod 20001:20001 -n istio-system
+kubectl port-forward $kialiPod --address 0.0.0.0 20001:20001 -n istio-system
 
 # To visualize the telemetry and health of the Mesh
 grafanaPod=$(kubectl get pods -n istio-system -o jsonpath="{.items[*].metadata.name}" -l app=grafana)
-kubectl port-forward $grafanaPod 3000:3000 -n istio-system
+kubectl port-forward $grafanaPod --address 0.0.0.0 3000:3000 -n istio-system
 
 # To inspect and query the metrics of the Mesh
 prometheusPod=$(kubectl get pods -n istio-system -o jsonpath="{.items[*].metadata.name}" -l app=prometheus)
-kubectl port-forward $prometheusPod 9090:9090 -n istio-system
+kubectl port-forward $prometheusPod --address 0.0.0.0 9090:9090 -n istio-system
